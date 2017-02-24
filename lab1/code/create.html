@@ -1,0 +1,72 @@
+<!DOCTYPe html>
+<html>
+    <head>
+        <title>
+           Create new book
+        </title>
+        <script src="lab1.js"></script>
+        <link href="lab1.css" rel="stylesheet">
+    </head>
+    <body class="noselect">
+        <div class="classpicker">
+            <table class="pickertable">
+                <tbody>
+                <tr>
+                    <td id="ab" onclick="switchType('ab')" 
+                    class="pressedpicker" >
+                        Audiobook
+                    </td>
+                    <td id="tb" onclick="switchType('tb')" 
+                    class="pickertable" >
+                        Textbook
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+       
+<div id="content" >
+<table class="createtable" id="datatable">
+<tbody>
+                <tr>
+                    <td class="createtable_td">Type</td>
+                     <td class="createtable_td"><input id="type" readonly value="Audiobook" onchange="validate('type','typeerr')"> </td>
+                     <td class="createtable_td"><label id="typeerr"  style="visibility: hidden" class="msgstab"/> </td>
+                </tr>
+                <tr>
+                    <td class="createtable_td">Title</td>
+                     <td class="createtable_td"><input id="title" value="Def title" onchange="validate('title','titleerr')"> </td>
+                     <td class="createtable_td"><label id="titleerr"  style="visibility: hidden" class="msgstab"/> </td>
+                </tr>
+                <tr>
+                    <td class="createtable_td">Author</td>
+                     <td class="createtable_td"><input id="author" value="Def author" onchange="validate('author','authorerr')"> </td>
+                     <td class="createtable_td"><label id="authorerr"  style="visibility: hidden" class="msgstab"/> </td>
+                </tr>
+                <tr>
+                    <td class="createtable_td">Publishing House</td>
+                     <td class="createtable_td"><input id="phouse" value="Def phouse" onchange="validate('phouse','phouseerr')"> </td>
+                     <td class="createtable_td"><label id="phouseerr"  style="visibility: hidden" class="msgstab"/> </td>
+                </tr>
+                <tr>
+                    <td class="createtable_td">Branch</td>
+                     <td class="createtable_td"><input id="branch" value="Def branch" onchange="validate('branch','brancherr')"> </td>
+                     <td class="createtable_td"><label id="brancherr"  style="visibility: hidden" class="msgstab"/> </td>
+                </tr>
+                <tr>
+                    <td id="dur" class="createtable_td" >Duration</td>
+                     <td class="createtable_td"><input id="duration" value="Default" onchange="validate('duration','durerr')"> </td>
+                     <td class="createtable_td"><label id="durerr"  style="visibility: hidden" class="msgstab"/> </td>
+                </tr>
+                <tr>
+                    <td id="nar" class="createtable_td">Narrator</td>
+                     <td class="createtable_td"><input id="narrator" value="Default" onchange="validate('narrator','narerr')"> </td>
+                     <td class="createtable_td"><label id="narerr"  style="visibility: hidden" class="msgstab"/> </td>
+                </tr>
+</tbody>
+</table>
+</div>
+ <input id="cb" class="createbutton" type="button" value="Create" onclick="create('ab')">
+ <input id="clb" class="clearbutton" type="button" value="Clear" onclick="Clear('ab')">
+    </body>
+</html>

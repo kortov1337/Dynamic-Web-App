@@ -1,0 +1,35 @@
+<!DOCTYPe html>
+<html>
+    <head>
+        <title>
+        Books
+        </title>
+        <script src="lab1.js"></script>
+        <link href="lab1.css" rel="stylesheet">
+    </head>
+    <body onload="loadBooks()" class="noselect">
+        <div class="classpicker">
+            <table class="pickertable">
+                <tbody>
+                <tr>
+                    <td id="alb" onclick="pickClass('alb')" class="pressedpicker">
+                        All book
+                    </td>
+                    <td id="ab" onclick="pickClass('ab')" class="pickertable">
+                        Audiobook
+                    </td>
+                    <td id="tb" onclick="pickClass('tb')" class="pickertable">
+                        Textbook
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <input class="createbutton" type="button" value="Create" onclick="location.href='create.html'">
+<div id="content" >
+<table class="datatable" id="datatable">
+
+</table>
+</div>
+    </body>
+</html>
