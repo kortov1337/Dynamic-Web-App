@@ -84,7 +84,7 @@
         -ms-user-select: none;
          -o-user-select: none;
             user-select: none;
-            background-image: url("1.jpeg");
+            background-image: url("../img/1.jpeg");
             background-size: cover;
 }
 .msgstab{
