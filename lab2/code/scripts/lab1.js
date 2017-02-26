@@ -1,6 +1,20 @@
+//интерполяция в create и save
+//итератор в clear
+
+
 const books=[];
 const validationLog=[];
-
+let proxy = new Proxy(validationLog,{
+    get(target,prop){
+         console.log(`Read ${prop}`);
+         return target[prop];
+    },
+    set(target, prop, value) {
+    console.log(`Write ${prop} ${value}`);
+    target[prop] = value;
+    return true;
+  }
+})
 //Classes//////////////////////////////////////////////////////////////////////////////////
 
 class Author {
@@ -78,7 +92,8 @@ function getXmlHttp(){
 function pushInLog(item){
     let flag= false;
     validationLog.forEach((it,i,validationLog)=>{if(it.fieldName==item.fieldName)flag=true;})
-    if(!flag)validationLog.push(item);
+   // if(!flag)validationLog.push(item);
+   if(!flag)proxy.push(item);
     else return;
 }
 
@@ -99,21 +114,16 @@ function getAllBooks(){
     }
 }
 
-function Clear(callType){
-    document.getElementById('title').value="";
-    document.getElementById('author').value="";
-    document.getElementById('phouse').value="";
-    document.getElementById('branch').value="";
-    if(callType=='ab'){
-    document.getElementById('duration').value="";
-    document.getElementById('narrator').value="";
-    }
+function Clear(){
+    let inputs = document.querySelectorAll("input")
+    let inputsIterator = getInputsIterator(inputs);
 
-    if(callType=='tb'){
-    document.getElementById('numofpage').value="";
-    document.getElementById('binding').value="";
-    }
-
+   for(let i = 0;i<inputs.length;i++)
+   {
+     let inp = inputsIterator.next();
+     if(!inp.done&&(inp.value.type=="text"||inp.type=="number"))
+     inp.value.value="";
+   }
 }
 
 function isAlreadyIn(id){
@@ -204,7 +214,18 @@ function loadInfo(){
         label2.innerText='Binding';
         label2.id='bind';
     }
+    }
 }
+
+function getInputsIterator(array){
+    var nextIndex = 0;   
+    return {
+       next: function(){
+           return nextIndex < array.length ?
+               {value: array[nextIndex++], done: false} :
+               {done: true};
+       }
+    }
 }
 
 //Loading books in objects/page////////////////////////////////////////////////////////////
@@ -451,12 +472,10 @@ function switchType(buttId){
         let bbinding = document.getElementById('binding');
         let label2 = document.getElementById('bind');
         let button = document.getElementById('cb');
-        let button2 = document.getElementById('clb');
         document.getElementById(buttId).className='pressedpicker';
         document.getElementById('tb').className='pickertable';
         document.getElementById('type').value="Audiobook";
         button.setAttribute("onclick","create('ab')");
-        button2.setAttribute("onclick","Clear('ab')");
         numOfPage.id='duration';
         numOfPage.setAttribute("onchange","validate('duration','durerr')");
         label1.innerText='Duration';
@@ -472,12 +491,10 @@ function switchType(buttId){
         let bbinding = document.getElementById('narrator');
         let label2 = document.getElementById('nar');
         let button = document.getElementById('cb');
-        let button2 = document.getElementById('clb');
         document.getElementById(buttId).className='pressedpicker';
         document.getElementById('ab').className='pickertable';
         document.getElementById('type').value="Textbook";
         button.setAttribute("onclick","create('tb')");
-        button2.setAttribute("onclick","Clear('tb')");
         numOfPage.id='numofpage';
         numOfPage.setAttribute("onchange","validate('numofpage','durerr')");
         label1.innerText='Number of pages';
@@ -589,7 +606,22 @@ function create(callType){
     }
 
     if(validationLog.length!=0)
-    alert("Validation failed. Plz fill fields correctly");
+    {
+         let troubles="";
+        /* validationLog.forEach((item,i,validationLog)=>{
+             if(!item.isValid)
+             troubles+=item.fieldName+", ";
+         })*/
+         
+
+         proxy.forEach((item,i,proxy)=>{
+             if(!item.isValid)
+             troubles+=item.fieldName+", ";
+         })
+
+         alert(`Validation failed. Plz fill fields correctly: ${troubles}`);
+    }
+   
     else{
         let xmlhttp = getXmlHttp();
         xmlhttp.open('POST','http://localhost:2403/books',true);
@@ -643,8 +675,15 @@ function save(callType){
         "&binding="+encodeURIComponent(obj.binding)+"&branch="+encodeURIComponent(obj.branch);
     }
 
-    if(validationLog.length!=0)
-    alert("Validation failed. Plz fill fields correctly");
+      if(validationLog.length!=0)
+    {
+         let troubles="";
+         validationLog.forEach((item,i,validationLog)=>{
+             if(!item.isValid)
+             troubles+=item.fieldName+", ";
+         })
+         alert(`Validation failed. Plz fill fields correctly: ${troubles}`);
+    }
     else{      
         var xmlhttp = getXmlHttp();
         xmlhttp.open('PUT','http://localhost:2403/books/'+obj.id,true);
@@ -662,14 +701,14 @@ function save(callType){
 }
 
 function cancel(){
-document.location.href="lab1.html"; 
+    document.location.href="lab1.html"; 
 }
 
 function validate(fieldId,msgStab){
     let field = document.getElementById(fieldId);
     let msgstab = document.getElementById(msgStab);
 
-if(fieldId=="type"){
+    if(fieldId=="type"){
     if(field.value=="") {       
         msgstab.style="visibility: unset";
         msgstab.innerHTML="This field is required";  
@@ -686,7 +725,7 @@ if(fieldId=="type"){
     }
     }   
 
-else if(fieldId=="duration"){
+    else if(fieldId=="duration"){
     if(!isNaN(parseInt(field.value))){
         if(parseInt(field.value)>0)
         { 
@@ -700,7 +739,7 @@ else if(fieldId=="duration"){
         pushInLog(new Vali("duration",false));
     } }
 
-else if(fieldId=="title"){
+    else if(fieldId=="title"){
     if(field.value=="")
     {      
         msgstab.style="visibility: unset";
@@ -712,7 +751,7 @@ else if(fieldId=="title"){
         document.getElementById(msgStab).style="visibility: hidden";
         deleteFromLog("title");
     }    }
-else if(fieldId=="author"){
+    else if(fieldId=="author"){
     if(field.value=="")
     {      
         msgstab.style="visibility: unset";
@@ -724,7 +763,7 @@ else if(fieldId=="author"){
         document.getElementById(msgStab).style="visibility: hidden";
         deleteFromLog("author");
     }}
-else if(fieldId=="phouse"){
+    else if(fieldId=="phouse"){
     if(field.value=="")
     {      
         msgstab.style="visibility: unset";
@@ -736,7 +775,7 @@ else if(fieldId=="phouse"){
         document.getElementById(msgStab).style="visibility: hidden";
         deleteFromLog("phouse");
     }}
-else if(fieldId=="branch"){
+    else if(fieldId=="branch"){
     if(field.value=="")
     {      
         msgstab.style="visibility: unset";
@@ -748,7 +787,7 @@ else if(fieldId=="branch"){
         document.getElementById(msgStab).style="visibility: hidden";
         deleteFromLog("branch");
     }}
-else if(fieldId=="narrator"){
+    else if(fieldId=="narrator"){
     if(field.value=="")
     {      
         msgstab.style="visibility: unset";
@@ -760,7 +799,7 @@ else if(fieldId=="narrator"){
         document.getElementById(msgStab).style="visibility: hidden";
         deleteFromLog("narrator");
     }}   
-else if(fieldId=="numofpage"){
+    else if(fieldId=="numofpage"){
     if(!isNaN(parseInt(field.value))){
         if(parseInt(field.value)>0)
         { 
@@ -773,7 +812,7 @@ else if(fieldId=="numofpage"){
         msgstab.style="visibility: unset";
         pushInLog(new Vali("numofpage",false));
     } }
-else if(fieldId=="binding"){
+    else if(fieldId=="binding"){
     if(field.value=="")
     {      
         msgstab.style="visibility: unset";
