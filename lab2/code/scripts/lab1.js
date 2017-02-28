@@ -1,9 +1,11 @@
 //интерполяция в create и save
 //итератор в clear
-
+//деструктуризация бъекта в loadInfo
 
 const books=[];
 const validationLog=[];
+const searchResult=[];
+var searchCol="";
 let proxy = new Proxy(validationLog,{
     get(target,prop){
          console.log(`Read ${prop}`);
@@ -15,6 +17,7 @@ let proxy = new Proxy(validationLog,{
     return true;
   }
 })
+
 //Classes//////////////////////////////////////////////////////////////////////////////////
 
 class Author {
@@ -128,7 +131,7 @@ function Clear(){
 
 function isAlreadyIn(id){
     let flag = false;
-    books.forEach((item,i,books)=>{
+    books.forEach((item,i,books)=>{       
         if(item.id==id)
         flag = true;      
     })
@@ -186,31 +189,53 @@ function loadInfo(){
     let result=JSON.parse(xmlhttp.responseText)
     if(result.type=="Audiobook")
     {
-        document.getElementById('type').value=result.type;
+        console.log(result);
+        let{type="default",title="default",authorName="default",publishingHouse="default",branch="default",
+        duration="default",narrator="default"}=result;
+
+        document.getElementById('type').value=type;
+        document.getElementById('title').value=title;
+        document.getElementById('author').value=authorName;
+        document.getElementById('phouse').value=publishingHouse;
+        document.getElementById('branch').value=branch;
+        document.getElementById('duration').value=duration;
+        document.getElementById('narrator').value=narrator;
+
+        /*document.getElementById('type').value=result.type;
         document.getElementById('title').value=result.title;
         document.getElementById('author').value=result.authorName;
         document.getElementById('phouse').value=result.publishingHouse;
         document.getElementById('branch').value=result.branch;
         document.getElementById('duration').value=result.duration;
-        document.getElementById('narrator').value=result.narrator;
+        document.getElementById('narrator').value=result.narrator;*/
     }
      if(result.type=="Textbook")
     {
+        let{type,title,authorName,publishingHouse,branch,numberOfPage,binding}=result;
+        document.getElementById('type').value=type;
+        document.getElementById('title').value=title;
+        document.getElementById('author').value=authorName;
+        document.getElementById('phouse').value=publishingHouse;
+        document.getElementById('branch').value=branch;
+        
+        /*
         document.getElementById('type').value=result.type;
         document.getElementById('title').value=result.title;
         document.getElementById('author').value=result.authorName;
         document.getElementById('phouse').value=result.publishingHouse;
-        document.getElementById('branch').value=result.branch;
+        document.getElementById('branch').value=result.branch;*/
         let numOfPage = document.getElementById('duration');
         let label1 = document.getElementById('dur');
         let bbinding = document.getElementById('narrator');
         let label2 = document.getElementById('nar');
         numOfPage.id='numofpage';
-        numOfPage.value=result.numberOfPage;
+        //numOfPage.value=result.numberOfPage;
+        numOfPage.value=numberOfPage;
         label1.innerText='Number of pages';
         label1.id='num';
         bbinding.id='binding';
-        bbinding.value=result.binding;
+        //bbinding.value=result.binding;
+        bbinding.value=binding;
         label2.innerText='Binding';
         label2.id='bind';
     }
@@ -250,8 +275,8 @@ function loadBooks(){
     for(let i=0; i<values.length; i++)
     {
         let cell=document.createElement("th");
-        cell.innerHTML=values[i];       
-        row.appendChild(cell);
+        cell.innerHTML=values[i];  
+        row.appendChild(cell);            
     }
      for(let i=0; i<data.length; i++)
     {
@@ -439,8 +464,8 @@ function pickClass(classType){
         let button2 = document.getElementById('tb');
         let button3 = document.getElementById('alb');
         button.className="pressedpicker";
-        button2.className="pickertable"
-        button3.className="pickertable"        
+        button2.className="pickertable";
+        button3.className="pickertable";     
         loadAudiobooks();        
     }
     if(classType=='tb')
@@ -449,8 +474,8 @@ function pickClass(classType){
         let button2 = document.getElementById('ab');
         let button3 = document.getElementById('alb');
         button.className="pressedpicker";
-        button2.className="pickertable"
-        button3.className="pickertable"      
+        button2.className="pickertable";
+        button3.className="pickertable";      
         loadTextbooks();    
     }
     if(classType=='alb')
@@ -459,8 +484,8 @@ function pickClass(classType){
         let button2 = document.getElementById('ab');
         let button3 = document.getElementById('tb');
         button.className="pressedpicker";
-        button2.className="pickertable"
-        button3.className="pickertable"        
+        button2.className="pickertable";
+        button3.className="pickertable";        
         loadBooks();
     } 
 }
@@ -607,13 +632,7 @@ function create(callType){
 
     if(validationLog.length!=0)
     {
-         let troubles="";
-        /* validationLog.forEach((item,i,validationLog)=>{
-             if(!item.isValid)
-             troubles+=item.fieldName+", ";
-         })*/
-         
-
+         let troubles="";       
          proxy.forEach((item,i,proxy)=>{
              if(!item.isValid)
              troubles+=item.fieldName+", ";
@@ -825,4 +844,96 @@ function validate(fieldId,msgStab){
         deleteFromLog("binding");
     }} 
 
+}
+
+/*function onHeaderClick(cellId)
+{     
+    let cell = document.getElementById(cellId);
+    cell.className="pressedpicker";
+    searchCol = cellId;
+}*/
+
+function search () {
+    //debugger;
+    searchResult.forEach((item,i,searchResult)=>{
+        searchResult.pop();
+    })
+    let query = document.getElementById('query').value;
+   //console.log(query.toLowerCase);
+
+    books.forEach((item,i,books)=>{
+        if(
+            query==item.author||//.toLowerCase||
+            query==item.title||//.toLowerCase||
+            query==item.type||//.toLowerCase||
+            query==item.authorName||//.toLowerCase||
+            query==item.publishingHouse||//.toLowerCase||
+            query==item.branch//.toLowerCase
+            ){
+                searchResult.push(item);
+            }       
+    })  
+    printSearchResult();
+}
+
+function printSearchResult(){
+    
+    let data=searchResult;
+    let root_node=document.getElementById("content");
+    let old_table = document.getElementById("datatable");
+    root_node.removeChild(old_table);
+    
+    root_node.innerHTML="";
+    let table=document.createElement("table");
+    table.className="datatable";
+    table.id="datatable";    
+    let tbody=document.createElement("tbody");
+    table.appendChild(tbody);
+    if(searchResult.length>0)
+    {
+    let row=document.createElement("tr");
+ 
+    let values = ["ID","Type","Author Name","Title","Branch","Publishing House",""];
+    tbody.appendChild(row);
+    for(let i=0; i<values.length; i++)
+    {
+        let cell=document.createElement("th");
+        cell.innerHTML=values[i];   
+        row.appendChild(cell);            
+    }
+     for(let i=0; i<data.length; i++)
+    {
+        row=document.createElement("tr");
+        tbody.appendChild(row);
+        values=
+        [data[i].id, data[i].type, data[i].author.name, data[i].title, data[i].branch, data[i].publishingHouse];
+        for(let j=0; j<values.length; j++)
+        {
+            let cell=document.createElement("td");
+            if(j==3)
+            {             
+                let ref=document.createElement("a");
+                ref.href="info.html?id="+data[i].id;
+                ref.innerHTML=values[j];  
+                ref.className="editref";         
+                cell.appendChild(ref);
+           }
+           else
+               cell.innerHTML=values[j];
+                         
+            row.appendChild(cell);
+        }       
+        let cell=document.createElement("td");
+        let editref=document.createElement("a");
+        row.appendChild(cell);
+    }   
+    root_node.appendChild(table);
+    }
+    else{
+    let header=document.createElement("h2");
+    header.className="datatable";
+    header.innerHTML="No results was found..."
+    root_node.appendChild(header);
+    root_node.appendChild(table);
+    }
 }
