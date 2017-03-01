@@ -1,7 +1,9 @@
 //интерполяция в create и save
 //итератор в clear
 //деструктуризация бъекта в loadInfo
-
+//прокси рядом и в проверке валидации
+//fetch api в deleteById
+//promise chain save create
 const books=[];
 const validationLog=[];
 const searchResult=[];
@@ -534,20 +536,21 @@ function switchType(buttId){
 
 //CRUD inerface////////////////////////////////////////////////////////////////////////////
 function deleteById(itemId){
-    if(confirm("Delete?")){  
-    let xmlhttp=getXmlHttp();
-    xmlhttp.open('DELETE','http://localhost:2403/books/'+itemId,true);  
-    xmlhttp.onreadystatechange = function() {
-        if(xmlhttp.readyState ==4 ){
-            if(xmlhttp.status == 200 ){
+    if(confirm("Delete?")){ 
+        let promise = fetch('http://localhost:2403/books/'+itemId,
+        {
+            method: 'DELETE'
+        }).then(response=>{
+            if(response.status==200)
+            {
+               // console.log(response);
                 alert("Operation complete");
                 let row = document.getElementById(itemId).parentNode.parentNode;
                 row.parentNode.removeChild(row);
-               // document.location.reload();
             }
-        }
-    }; 
-    xmlhttp.send(null);
+            else
+            console.log(response.statusText);
+        })
     }
 }
 
@@ -642,18 +645,17 @@ function create(callType){
     }
    
     else{
-        let xmlhttp = getXmlHttp();
-        xmlhttp.open('POST','http://localhost:2403/books',true);
-        xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-        xmlhttp.onreadystatechange = function() {
-        if(xmlhttp.readyState ==4 ){
-            if(xmlhttp.status == 200 ){
-                alert("Operation complete");
-                document.location.href="lab1.html";           
-            }
-        }
-    }; 
-    xmlhttp.send(tmp); 
+        let promise = fetch('http://localhost:2403/books',{
+            method : 'POST',
+            headers :  {"Content-Type": "application/x-www-form-urlencoded"},
+            body: tmp
+        }).then(response=>{
+            return response.json();
+        })
+        .then(item=>{
+            alert("Operation complete! "+item.title+" added.");
+            document.location.href="lab1.html"; 
+        })
     }   
 }
 
@@ -703,20 +705,20 @@ function save(callType){
          })
          alert(`Validation failed. Plz fill fields correctly: ${troubles}`);
     }
-    else{      
-        var xmlhttp = getXmlHttp();
-        xmlhttp.open('PUT','http://localhost:2403/books/'+obj.id,true);
-        xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-        xmlhttp.onreadystatechange = function() {
-            if(xmlhttp.readyState ==4 ){
-                if(xmlhttp.status == 200 ){
-                    alert("Operation complete");
-                    document.location.href="lab1.html";           
-            }
-        }
-        }; 
-    xmlhttp.send(tmp);       
-    }
+    else{
+        let promise = fetch('http://localhost:2403/books/'+obj.id,{
+            method : 'PUT',
+            headers :  {"Content-Type": "application/x-www-form-urlencoded"},
+            body: tmp
+        }).then(response=>{
+            return response.json();
+        })
+        .then(item=>{
+            console.log(item);
+            alert("Operation complete! "+item.title+" saved.");
+            document.location.href="lab1.html"; 
+        })
+    }  
 }
 
 function cancel(){
@@ -845,13 +847,6 @@ function validate(fieldId,msgStab){
     }} 
 
 }
-
-/*function onHeaderClick(cellId)
-{     
-    let cell = document.getElementById(cellId);
-    cell.className="pressedpicker";
-    searchCol = cellId;
-}*/
 
 function search () {
     //debugger;
