@@ -1,0 +1,101 @@
+{
+	"type": "Collection",
+	"properties": {
+		"type": {
+			"name": "type",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "type",
+			"order": 0
+		},
+		"title": {
+			"name": "title",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "title",
+			"order": 1
+		},
+		"author": {
+			"name": "author",
+			"type": "object",
+			"typeLabel": "object",
+			"required": false,
+			"id": "author",
+			"order": 2
+		},
+		"authorName": {
+			"name": "authorName",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "authorName",
+			"order": 3
+		},
+		"publishingHouse": {
+			"name": "publishingHouse",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "publishingHouse",
+			"order": 4
+		},
+		"narrator": {
+			"name": "narrator",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "narrator",
+			"order": 5
+		},
+		"duration": {
+			"name": "duration",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "duration",
+			"order": 6
+		},
+		"branch": {
+			"name": "branch",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "branch",
+			"order": 7
+		},
+		"binding": {
+			"name": "binding",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "binding",
+			"order": 8
+		},
+		"numberOfPage": {
+			"name": "numberOfPage",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "numberOfPage",
+			"order": 9
+		},
+		"authorCountry": {
+			"name": "authorCountry",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "authorCountry",
+			"order": 10
+		},
+		"authorGender": {
+			"name": "authorGender",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "authorGender",
+			"order": 11
+		}
+	}
+}
