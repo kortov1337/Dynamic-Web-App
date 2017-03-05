@@ -1,0 +1,63 @@
+<!DOCTYPe html>
+<html>
+    <head>
+        <title>
+        Books
+        </title>
+        <!--<script src="scripts/lab1.js"></script>-->
+        <script src="js/index.js"></script>
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <link href="css/main.css" rel="stylesheet">
+        <!--<link href="css/main.css" rel="stylesheet">-->
+    </head>
+    <body  class="noselect" onload="BooksModule.loadBooks()">
+<nav class="navbar-inverse">
+  <div>
+    <div class="container">
+        <div class="box">
+            <div class="search-cell1">
+                <table class="pickertable">
+                <tbody>
+                <tr>                   
+                    <td id="alb" onclick="BooksModule.pickClass('alb')" class="pressedpicker">
+                        All book
+                    </td>
+                    <td id="ab" onclick="BooksModule.pickClass('ab')" class="pickertable">
+                        Audiobook
+                    </td>
+                    <td id="tb" onclick="BooksModule.pickClass('tb')" class="pickertable">
+                        Textbook
+                    </td>                                               
+                </tr>
+                </tbody>
+            </table>              
+            
+            </div>
+            <div class="search-cell2">
+                <div style="float: right" class="logo-box"/>
+            </div>
+            <div style="float:right">
+                <input type="text" id="query" placeholder="search..." class="search-textbox"  >
+                <div class="search-btn" onclick="BooksModule.search()">OK</div>
+                </div>
+        </div>
+    </div>
+</div>
+</nav>
+<div>
+    <div class="container">
+        <div class="box">
+            <div class="search-cell1">
+                <input class="btn" type="button" value="Create" onclick="location.href='create.html'">                
+            </div>         
+        </div>
+    </div>
+</div>
+
+<div id="content" >
+<table class="datatable" id="datatable" ></table>
+</div>
+
+
+</body>
+</html>

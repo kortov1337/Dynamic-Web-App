@@ -1,0 +1,138 @@
+
+ .datatable { 
+    width: 100%; 
+    border-collapse: collapse; 
+    background-color: rgba(245, 245, 220, 0.4);
+    font-weight: bold;
+   }
+   .createtable{
+       width: fit-content;
+       border-collapse: collapse;
+       background-color: rgba(245, 245, 220, 0.4);
+    font-weight: bold;
+       border: none !important; 
+   }
+   .createtable_td{
+       border: none;
+       text-align: left;
+       background-color: rgba(245, 245, 220, 0.4);
+    font-weight: bold;
+       width: max-content;
+   }
+   th { 
+    text-align: center; 
+    padding: 5px 5px 5px 5px;     
+    border: 1px solid black; 
+   }
+   td { 
+    padding: 5px 5px 5px 5px;     
+    border: 1px solid black; 
+   }
+   .thead tr{
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+   }
+    th:hover {
+    background: rgba(55, 245, 100, 0.4);
+}
+   .delref {
+       color: red;
+       cursor: pointer;
+   }
+   .editref{
+       color: black;
+       cursor: pointer;
+   }
+   .classpicker{      
+       padding: 10px 0px 20px 0px;
+       cursor: pointer;
+       width: fit-content;
+       background-color: rgba(245, 245, 220, 0.4);
+       font-weight: bold;
+   }
+   .pickertable{   
+       background-color: rgba(245, 245, 220, 0.4);
+       font-weight: bold;
+       height: 40px;
+       width: fit-content;
+       border-collapse: collapse;
+       cursor: pointer;
+   }
+   .pressedpicker{            
+       height: 40px;
+       width: fit-content;
+       border-collapse: collapse;
+       background: lightgrey;
+       cursor: pointer;
+   }
+  .createbutton{
+       border: 1 px solid;
+       border-radius: 5px; 
+       width: fit-content;
+       padding: 5px 30px 5px 30px;
+       margin-top: 10px;
+       margin-bottom: 10px;
+       background: lightblue;
+   }
+   .clearbutton{
+       border: 1 px solid;
+       border-radius: 5px; 
+       width: fit-content;
+       padding: 5px 30px 5px 30px;
+       margin-top: 10px;
+       margin-bottom: 40px;
+       background: white;
+   }
+.noselect {
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+         -o-user-select: none;
+            user-select: none;
+            background-image: url("../img/1.jpeg");
+            background-size: cover;
+}
+.msgstab{
+    border: none;
+    width: fit-content;
+    user-select: none;
+}
+.container{
+    overflow:hidden;
+    width:100%;
+    }
+.box{
+    white-space:nowrap;
+        }
+.box div{  
+    display:inline-block;
+    }
+
+.search-btn{
+    background: #ffffff;
+    padding: 5px 10px 5px 10px;  
+    margin-top: 10px; 
+    border-radius: 2px;
+    width:fit-content;
+    cursor: pointer;
+}
+.search-cell1{
+    width: 73%;
+    padding: 5px;
+}
+search-cell2{
+    width: 17%;
+    padding: 5px;
+}
+.search-textbox{
+   width: 200px;
+}
+.logo-box{
+    background-image: url("../img/logo.jpg");
+    width: 100px;
+    height: 50px;
+    background-size: cover;
+    margin: 5px 5px 0px 5px;
+}
