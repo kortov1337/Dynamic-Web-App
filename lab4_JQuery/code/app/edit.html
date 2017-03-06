@@ -5,6 +5,11 @@
             Info
         </title>
         <script src="js/index.js"></script>
+        <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="js/moment-with-locales.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="js/jqscript.js"></script>
         <link href="css/main.css" rel="stylesheet">
     </head>
     <body class="noselect" onload="BooksModule.edit()">
@@ -48,11 +53,26 @@
                      <td class="createtable_td"><input id="narrator" type="text" onchange="BooksModule.validate('narrator','narerr')"> </td>
                      <td class="createtable_td"><label id="narerr" value="" style="visibility: hidden" class="msgstab"/> </td>
                 </tr>
+                 <tr>                     
+                    <td class="createtable_td">Release Date</td>
+                     <td class="createtable_td"> 
+                          <div class="form-group">
+                         <div class="input-group date" id="datetimepicker1">
+                            <input id="rdate" type="text" class="form-control" />
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div> 
+                        </div> 
+                    </td> 
+                    <td class="createtable_td"><label id="rdateerr"  style="visibility: hidden" class="msgstab"/> </td>                    
+                </tr>
 </tbody>
 </table>
            
 </div>
 <input id="save" class="createbutton" type="button" value="Save" onclick="">
- <input id="cancel" class="clearbutton" type="button" value="Cancel" onclick="BooksModule.cancel()">
+ <input id="cancel" class="clearbutton" type="button" value="Cancel" >
+
     </body>
 </html>

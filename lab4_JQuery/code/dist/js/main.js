@@ -1,3 +1,6 @@
+//underscore в pushInLog
+
+
 import * as Books from './books'
 import * as Functions from './functions'
 function main(){

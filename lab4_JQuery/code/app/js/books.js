@@ -123,16 +123,16 @@ function jsonToBooks(res){
 
 function loadBooks(){
     getAllBooks();
+
     let data=books;
-    let [root_node,...rest]=$('#content');//document.getElementById("content");
-    let [old_table, ...rest2] = $('#datatable');//document.getElementById("datatable");
+    let [root_node,...rest]=$('#content');
+    let [old_table, ...rest2] = $('#datatable');
     root_node.removeChild(old_table);
     
     root_node.innerHTML="";
     let table=document.createElement("table");
     table.className="datatable";
     table.id="datatable";
-    table.setAttribute("onclick","BooksModule.sortGrid()");
     let tbody=document.createElement("tbody");
     let theader = document.createElement("thead");
     table.appendChild(theader);
@@ -145,7 +145,6 @@ function loadBooks(){
         
         let cell=document.createElement("th");
         cell.innerHTML=values[i];
-        cell.setAttribute("data-type","string");
         row.appendChild(cell);            
     }
     theader.appendChild(row);
@@ -188,6 +187,7 @@ function loadBooks(){
     }
     
     root_node.appendChild(table);
+    $("#datatable").dataTable();
 }
 
 function loadAudiobooks(){   
@@ -201,7 +201,6 @@ function loadAudiobooks(){
     let table=document.createElement("table");
     table.className="datatable";
     table.id="datatable";
-    table.setAttribute("onclick","BooksModule.sortGrid()");
     let tbody=document.createElement("tbody");
     let theader = document.createElement("thead");
     table.appendChild(theader);
@@ -213,7 +212,6 @@ function loadAudiobooks(){
     {
         let cell=document.createElement("th");
         cell.innerHTML=values[i];
-        cell.setAttribute("data-type","string");
         row.appendChild(cell);            
     }
     theader.appendChild(row);
@@ -258,6 +256,7 @@ function loadAudiobooks(){
     }
     
     root_node.appendChild(table);
+    $("#datatable").dataTable();
 }
 
 function loadTextbooks(){

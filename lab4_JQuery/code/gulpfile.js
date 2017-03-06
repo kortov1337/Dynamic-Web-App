@@ -54,9 +54,9 @@ gulp.task('fonts', () => {
 })
 
 gulp.task('img', () =>
-    gulp.src('./app/img/*')
+    gulp.src('./app/images/*')
         .pipe(imagemin())
-        .pipe(gulp.dest('./dist/img'))
+        .pipe(gulp.dest('./dist/images'))
 );
 
 gulp.task('html', () => {

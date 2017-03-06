@@ -91,7 +91,7 @@
         -ms-user-select: none;
          -o-user-select: none;
             user-select: none;
-            background-image: url("../img/1.jpeg");
+            background-image: url("../images/1.jpg");
             background-size: cover;
 }
 .msgstab{
@@ -130,7 +130,7 @@ search-cell2{
    width: 200px;
 }
 .logo-box{
-    background-image: url("../img/logo.jpg");
+    background-image: url("../images/logo.jpg");
     width: 100px;
     height: 50px;
     background-size: cover;

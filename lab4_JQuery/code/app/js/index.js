@@ -62,6 +62,9 @@ var BooksModule =
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	//underscore в pushInLog
+
+
 	function main() {
 	    var book = new Books.Book("sadasd", "dfsdfa", "qweqwe");
 	    console.log('PI = ' + book.title);
@@ -302,19 +305,18 @@ var BooksModule =
 
 	function loadBooks() {
 	    getAllBooks();
+
 	    var data = books;
 
 	    var _$ = $('#content'),
 	        _$2 = _toArray(_$),
 	        root_node = _$2[0],
-	        rest = _$2.slice(1); //document.getElementById("content");
-
+	        rest = _$2.slice(1);
 
 	    var _$3 = $('#datatable'),
 	        _$4 = _toArray(_$3),
 	        old_table = _$4[0],
-	        rest2 = _$4.slice(1); //document.getElementById("datatable");
-
+	        rest2 = _$4.slice(1);
 
 	    root_node.removeChild(old_table);
 
@@ -322,7 +324,6 @@ var BooksModule =
 	    var table = document.createElement("table");
 	    table.className = "datatable";
 	    table.id = "datatable";
-	    table.setAttribute("onclick", "BooksModule.sortGrid()");
 	    var tbody = document.createElement("tbody");
 	    var theader = document.createElement("thead");
 	    table.appendChild(theader);
@@ -334,7 +335,6 @@ var BooksModule =
 
 	        var cell = document.createElement("th");
 	        cell.innerHTML = values[i];
-	        cell.setAttribute("data-type", "string");
 	        row.appendChild(cell);
 	    }
 	    theader.appendChild(row);
@@ -371,6 +371,7 @@ var BooksModule =
 	    }
 
 	    root_node.appendChild(table);
+	    $("#datatable").dataTable();
 	}
 
 	function loadAudiobooks() {
@@ -384,7 +385,6 @@ var BooksModule =
 	    var table = document.createElement("table");
 	    table.className = "datatable";
 	    table.id = "datatable";
-	    table.setAttribute("onclick", "BooksModule.sortGrid()");
 	    var tbody = document.createElement("tbody");
 	    var theader = document.createElement("thead");
 	    table.appendChild(theader);
@@ -395,7 +395,6 @@ var BooksModule =
 	    for (var i = 0; i < values.length; i++) {
 	        var cell = document.createElement("th");
 	        cell.innerHTML = values[i];
-	        cell.setAttribute("data-type", "string");
 	        row.appendChild(cell);
 	    }
 	    theader.appendChild(row);
@@ -433,6 +432,7 @@ var BooksModule =
 	    }
 
 	    root_node.appendChild(table);
+	    $("#datatable").dataTable();
 	}
 
 	function loadTextbooks() {
@@ -620,7 +620,7 @@ var BooksModule =
 
 	var sortFlag = false;
 	var validationLog = [];
-
+	//import * as Underscore from './underscore'
 	var proxy = new Proxy(validationLog, {
 	    get: function get(target, prop) {
 	        console.log("Read " + prop);
@@ -696,7 +696,9 @@ var BooksModule =
 	                _result$duration = result.duration,
 	                duration = _result$duration === undefined ? "default" : _result$duration,
 	                _result$narrator = result.narrator,
-	                narrator = _result$narrator === undefined ? "default" : _result$narrator;
+	                narrator = _result$narrator === undefined ? "default" : _result$narrator,
+	                _result$releaseDate = result.releaseDate,
+	                releaseDate = _result$releaseDate === undefined ? "01.01.0001" : _result$releaseDate;
 
 	            document.getElementById('type').value = type;
 	            document.getElementById('title').value = title;
@@ -705,6 +707,7 @@ var BooksModule =
 	            document.getElementById('branch').value = branch;
 	            document.getElementById('duration').value = duration;
 	            document.getElementById('narrator').value = narrator;
+	            document.getElementById('rdate').value = releaseDate;
 	        }
 	        if (result.type == "Textbook") {
 	            var _type = result.type,
@@ -713,13 +716,16 @@ var BooksModule =
 	                _publishingHouse = result.publishingHouse,
 	                _branch = result.branch,
 	                numberOfPage = result.numberOfPage,
-	                binding = result.binding;
+	                binding = result.binding,
+	                _result$releaseDate2 = result.releaseDate,
+	                _releaseDate = _result$releaseDate2 === undefined ? "01.01.0001" : _result$releaseDate2;
 
 	            document.getElementById('type').value = _type;
 	            document.getElementById('title').value = _title;
 	            document.getElementById('author').value = _authorName;
 	            document.getElementById('phouse').value = _publishingHouse;
 	            document.getElementById('branch').value = _branch;
+	            document.getElementById('rdate').value = _releaseDate;
 	            var numOfPage = document.getElementById('duration');
 	            var label1 = document.getElementById('dur');
 	            var bbinding = document.getElementById('narrator');
@@ -817,6 +823,7 @@ var BooksModule =
 	            document.getElementById('branch').value = result.branch;
 	            document.getElementById('duration').value = result.duration;
 	            document.getElementById('narrator').value = result.narrator;
+	            document.getElementById('rdate').value = result.releaseDate;
 	        }
 	        if (result.type == "Textbook") {
 	            document.getElementById('save').setAttribute('onclick', "BooksModule.save('tb')");
@@ -825,6 +832,7 @@ var BooksModule =
 	            document.getElementById('author').value = result.authorName;
 	            document.getElementById('phouse').value = result.publishingHouse;
 	            document.getElementById('branch').value = result.branch;
+	            document.getElementById('rdate').value = result.releaseDate;
 	            var numOfPage = document.getElementById('duration');
 	            var label1 = document.getElementById('dur');
 	            var bbinding = document.getElementById('narrator');
@@ -849,17 +857,18 @@ var BooksModule =
 	    var author = document.getElementById('author').value;
 	    var publishingHouse = document.getElementById('phouse').value;
 	    var branch = document.getElementById('branch').value;
+	    var rdate = document.getElementById('rdate').value;
 	    if (callType == 'ab') {
 	        var duration = document.getElementById('duration').value;
 	        var narrator = document.getElementById('narrator').value;
 	        var type = "Audiobook";
-	        var tmp = "id=" + encodeURIComponent(Id) + "type=" + encodeURIComponent(type) + "&title=" + encodeURIComponent(title) + "&authorName=" + encodeURIComponent(author) + "&publishingHouse=" + encodeURIComponent(publishingHouse) + "&narrator=" + encodeURIComponent(narrator) + "&duration=" + encodeURIComponent(duration) + "&branch=" + encodeURIComponent(branch);
+	        var tmp = "id=" + encodeURIComponent(Id) + "type=" + encodeURIComponent(type) + "&title=" + encodeURIComponent(title) + "&authorName=" + encodeURIComponent(author) + "&publishingHouse=" + encodeURIComponent(publishingHouse) + "&narrator=" + encodeURIComponent(narrator) + "&duration=" + encodeURIComponent(duration) + "&branch=" + encodeURIComponent(branch) + encodeURIComponent(branch) + "&releaseDate=" + encodeURIComponent(rdate);
 	    }
 	    if (callType == 'tb') {
 	        var numofpage = document.getElementById('numofpage').value;
 	        var binding = document.getElementById('binding').value;
 	        var _type2 = "Textbook";
-	        var tmp = "id=" + encodeURIComponent(Id) + "type=" + encodeURIComponent(_type2) + "&title=" + encodeURIComponent(title) + "&authorName=" + encodeURIComponent(author) + "&publishingHouse=" + encodeURIComponent(publishingHouse) + "&numberOfPage=" + encodeURIComponent(numofpage) + "&binding=" + encodeURIComponent(binding) + "&branch=" + encodeURIComponent(branch);
+	        var tmp = "id=" + encodeURIComponent(Id) + "type=" + encodeURIComponent(_type2) + "&title=" + encodeURIComponent(title) + "&authorName=" + encodeURIComponent(author) + "&publishingHouse=" + encodeURIComponent(publishingHouse) + "&numberOfPage=" + encodeURIComponent(numofpage) + "&binding=" + encodeURIComponent(binding) + "&branch=" + encodeURIComponent(branch) + encodeURIComponent(branch) + "&releaseDate=" + encodeURIComponent(rdate);
 	    }
 
 	    if (validationLog.length != 0) {
@@ -1033,9 +1042,11 @@ var BooksModule =
 
 	function pushInLog(item) {
 	    var flag = false;
-	    validationLog.forEach(function (it, i, validationLog) {
+	    debugger;
+	    _.each(validationLog, function (it, index, validationLog) {
 	        if (it.fieldName == item.fieldName) flag = true;
 	    });
+	    //validationLog.forEach((it,i,validationLog)=>{if(it.fieldName==item.fieldName)flag=true;})
 	    // if(!flag)validationLog.push(item);
 	    if (!flag) proxy.push(item);else return;
 	}

@@ -1,6 +1,6 @@
 var sortFlag=false;
 const validationLog=[];
-
+//import * as Underscore from './underscore'
 let proxy = new Proxy(validationLog,{
     get(target,prop){
          console.log(`Read ${prop}`);
@@ -68,7 +68,7 @@ function loadInfo(){
     if(result.type=="Audiobook")
     {
         let{type="default",title="default",authorName="default",publishingHouse="default",branch="default",
-        duration="default",narrator="default"}=result;
+        duration="default",narrator="default",releaseDate="01.01.0001"}=result;
         document.getElementById('type').value=type;
         document.getElementById('title').value=title;
         document.getElementById('author').value=authorName;
@@ -76,15 +76,17 @@ function loadInfo(){
         document.getElementById('branch').value=branch;
         document.getElementById('duration').value=duration;
         document.getElementById('narrator').value=narrator;
+        document.getElementById('rdate').value=releaseDate;
     }
      if(result.type=="Textbook")
     {
-        let{type,title,authorName,publishingHouse,branch,numberOfPage,binding}=result;
+        let{type,title,authorName,publishingHouse,branch,numberOfPage,binding,releaseDate="01.01.0001"}=result;
         document.getElementById('type').value=type;
         document.getElementById('title').value=title;
         document.getElementById('author').value=authorName;
         document.getElementById('phouse').value=publishingHouse;
         document.getElementById('branch').value=branch;
+        document.getElementById('rdate').value=releaseDate;
         let numOfPage = document.getElementById('duration');
         let label1 = document.getElementById('dur');
         let bbinding = document.getElementById('narrator');
@@ -189,6 +191,7 @@ function edit(){
         document.getElementById('branch').value=result.branch;
         document.getElementById('duration').value=result.duration;
         document.getElementById('narrator').value=result.narrator;
+        document.getElementById('rdate').value=result.releaseDate;
     }
      if(result.type=="Textbook")
     {
@@ -198,6 +201,7 @@ function edit(){
         document.getElementById('author').value=result.authorName;
         document.getElementById('phouse').value=result.publishingHouse;
         document.getElementById('branch').value=result.branch;
+        document.getElementById('rdate').value=result.releaseDate;
         let numOfPage = document.getElementById('duration');
         let label1 = document.getElementById('dur');
         let bbinding = document.getElementById('narrator');
@@ -221,7 +225,8 @@ function save(callType){
     let title = document.getElementById('title').value;
     let author = document.getElementById('author').value;
     let publishingHouse = document.getElementById('phouse').value;
-    let branch = document.getElementById('branch').value;  
+    let branch = document.getElementById('branch').value; 
+    let rdate = document.getElementById('rdate').value; 
     if(callType =='ab'){
         let duration = document.getElementById('duration').value;
         let narrator = document.getElementById('narrator').value;
@@ -229,7 +234,8 @@ function save(callType){
         var tmp = "id="+encodeURIComponent(Id)+"type="+encodeURIComponent(type)+"&title="+
         encodeURIComponent(title)+"&authorName="+encodeURIComponent(author)+"&publishingHouse="+
         encodeURIComponent(publishingHouse)+"&narrator="+encodeURIComponent(narrator)+"&duration="+
-        encodeURIComponent(duration)+"&branch="+encodeURIComponent(branch);
+        encodeURIComponent(duration)+"&branch="+encodeURIComponent(branch)+
+        encodeURIComponent(branch)+"&releaseDate="+encodeURIComponent(rdate);
     }
     if(callType=='tb'){
         let numofpage = document.getElementById('numofpage').value;
@@ -238,7 +244,8 @@ function save(callType){
         var tmp = "id="+encodeURIComponent(Id)+"type="+encodeURIComponent(type)+"&title="+ 
         encodeURIComponent(title)+"&authorName="+encodeURIComponent(author)+"&publishingHouse="+
         encodeURIComponent(publishingHouse)+"&numberOfPage="+encodeURIComponent(numofpage)+"&binding="+
-        encodeURIComponent(binding)+"&branch="+encodeURIComponent(branch);
+        encodeURIComponent(binding)+"&branch="+encodeURIComponent(branch)+
+        encodeURIComponent(branch)+"&releaseDate="+encodeURIComponent(rdate);
     }
 
       if(validationLog.length!=0)
@@ -454,7 +461,11 @@ function deleteFromLog(fieldName){
 
 function pushInLog(item){
     let flag= false;
-    validationLog.forEach((it,i,validationLog)=>{if(it.fieldName==item.fieldName)flag=true;})
+    debugger;
+    _.each(validationLog,(it,index,validationLog)=>{
+        if(it.fieldName==item.fieldName)flag=true;
+    })
+    //validationLog.forEach((it,i,validationLog)=>{if(it.fieldName==item.fieldName)flag=true;})
    // if(!flag)validationLog.push(item);
    if(!flag)proxy.push(item);
     else return;
